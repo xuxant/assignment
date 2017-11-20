@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_assignment_assignment,assignment.assignment,model_assignment_assignment,,1,0,0,0
