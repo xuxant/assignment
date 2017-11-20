@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <!-- Action to open Teacher Menu -->
+
+    <act_window id="action_teacher"
+                name="Teacher"
+                res_model="teacher.info"
+                view_mode="kanban,tree,form" />
+
+
+     <!-- Action to open Student Batch -->
+    <act_window id="batch_information"
+                name="Batch"
+                res_model="batch.info"
+                view_mode="kanban,tree,form" />
+
+    <!-- Action Window For Subject -->
+    <act_window id="subject_information"
+                name="Subject"
+                res_model="subject.info"
+                view_mode="kanban,tree,form" />   
+
+    <!-- Action to open Student menu -->
+
+    <act_window id="action_student"
+                name="Student"
+                res_model="student.info"
+                view_mode="kanban,tree,form" />
+
+
+
+    <!-- Action to open Assignment Menu -->
+
+    <act_window id="action_assignment"
+                name="Assignment"
+                res_model="assignment.info"
+                view_mode="kanban,tree,form" />
+
+    <!-- Action to Open Grading Page -->
+    <act_window id="assignment_grading"
+                name="Grading"
+                res_model="assignment.grading"
+                view_mode="kanban,form" />
+
+    <act_window id="grading_report"
+                name="Grading Report"
+                res_model="marking.assignment"
+                view_mode="kanban,form" />
+
+
+
+
+    <!-- menuitem of module -->
+
+    <!-- Parent Menu -->
+    <menuitem id="menu_assignment"
+              name="Assignment" />
+
+
+
+    <!-- Child Menu for Teacher -->
+    <menuitem id="menu_teacher_info"
+              name="Teacher Info"
+              parent="menu_assignment"
+              action="action_teacher" />
+
+
+     <!-- Batch Information -->
+    <menuitem id="batch_screen"
+              name="Class"
+              parent="menu_assignment"
+              action="batch_information" />
+
+    <!-- Subject Information -->
+    <menuitem id="subject_screen"
+              name="Subject"
+              parent="menu_assignment"
+              action="subject_information" /> 
+
+    <!-- Child Menu for Student -->
+    <menuitem id="menu_student_info"
+              name="Student Info"
+              parent="menu_assignment"
+              action="action_student" />
+
+    <!-- Child Menu for Assignment -->
+    <menuitem id="menu_assignment_info"
+              name="Assignment"
+              parent="menu_assignment"
+              action="action_assignment" />
+
+
+    <!-- Grading Menu -->
+    <menuitem id="grading_screen"
+              name="Grading"
+              parent="menu_assignment"
+              action="assignment_grading" />
+
+    <!-- Report Menu -->
+    <menuitem id="report_menu"
+              name="Report"
+              parent="menu_assignment"
+              action="grading_report" />
+
+
+</odoo>

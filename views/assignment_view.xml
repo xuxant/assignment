@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<odoo>
+<record id="view_form_teacher" model="ir.ui.view">
+        <field name="name">To Add Teacher Information</field>
+        <field name="model">teacher.info</field>
+        <field name="arch" type="xml">
+           <form string="Teacher Information">
+
+                <group>
+                    <field name="teacher_name"/>
+                    <field name="teacher_course"/>
+                    <field name="teacher_faculty" />
+                </group>
+           </form>
+
+
+        </field>
+
+    </record>
+
+
+
+
+
+</odoo>

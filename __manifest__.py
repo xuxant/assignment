@@ -27,6 +27,8 @@
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        'views/assignment_menu.xml',
+        'views/assignment_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
