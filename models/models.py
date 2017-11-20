@@ -66,26 +66,52 @@ class assignment(models.Model):
 
 class grading(models.Model):
     _name = 'assignment.grading'
-    _rec_name = 'total_marks'
+    _rec_name = 'obtain_marks'
+
+    @api.constrains('obtain_marks', 'minimum_marks')
+    def _validate_marks(self):
+        '''Method to validate marks'''
+        min_mark = self.minimum_marks > self.maximum_marks
+        if (self.obtain_marks > self.maximum_marks or min_mark):
+            raise ValidationError(_('''The obtained marks and minimum marks
+                              should not extend maximum marks!.'''))
+
 
 
     student_name = fields.Many2one('student.info', 'Assignment Submitted By', required=True)
     assignment_name = fields.Many2one('assignment.info', 'Name Of Assignment', required=True)
     submitted_date = fields.Date('Submitted Date', required=True)
-    marks_avaliable = fields.Integer('Total Marks For Assignment', required=True)
-    content_completed = fields.Integer('Complition in Percentage', required=True)
+    minimum_marks = fields.Float("Minimum Marks",
+                                 help="Minimum Marks of subject")
+    maximum_marks = fields.Float("Maximum Marks",
+                                 help="Maximum Marks of subject")
     peer_marks = fields.Integer('Peer Assigned Marks', required=True)
     teacher_marks = fields.Integer('Teacher Assigned Marks', required=True)
-    total_marks = fields.Integer(string='Total Marks', store=True, compute='_total_calculation')
+    obtain_marks = fields.Float("Obtain Marks", group_operator="avg", compute='_total_calculation')
+  #  total_marks = fields.Integer(string='Total Marks', store=True, compute='_total_calculation')
+  #  evaluation = fields.Char('Evaluation')
+    result = fields.Char(compute='_evaluation_calculation', string='Result',
+                         help="Result Obtained", store=True)
 
 
 
-    @api.depends('content_completed', 'peer_marks', 'teacher_marks')
+    @api.depends('peer_marks', 'teacher_marks')
     def _total_calculation(self):
-        for total in self:
-            total.total_marks = total.peer_marks + total.teacher_marks
-            return total.total_marks
+        for obtain in self:
+            obtain.obtain_marks = obtain.peer_marks + obtain.teacher_marks
+            return obtain.obtain_marks
 
+    
+    @api.multi
+    @api.depends('obtain_marks', 'minimum_marks')
+    def _evaluation_calculation(self):
+        for grade in self:
+            if grade.minimum_marks and grade.minimum_marks:
+                if grade.minimum_marks< \
+                     grade.obtain_marks:
+                    grade.result = 'Pass'
+                else:
+                    grade.result = 'Fail'
 
 
 
