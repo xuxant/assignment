@@ -66,7 +66,7 @@ class assignment(models.Model):
 
 class grading(models.Model):
     _name = 'assignment.grading'
-    _rec_name = 'student_name'
+    _rec_name = 'obtain_marks'
 
     @api.constrains('obtain_marks', 'minimum_marks')
     def _validate_marks(self):
@@ -78,16 +78,17 @@ class grading(models.Model):
 
 
 
+    assignment_id = fields.Many2one('marking.assignment', 'Report')
     student_name = fields.Many2one('student.info', 'Assignment Submitted By', required=True)
     assignment_name = fields.Many2one('assignment.info', 'Name Of Assignment', required=True)
     submitted_date = fields.Date('Submitted Date', required=True)
-    minimum_marks = fields.Float("Minimum Marks",
+    minimum_marks = fields.Integer("Minimum Marks",
                                  help="Minimum Marks of subject")
-    maximum_marks = fields.Float("Maximum Marks",
+    maximum_marks = fields.Integer("Maximum Marks",
                                  help="Maximum Marks of subject")
     peer_marks = fields.Integer('Peer Assigned Marks', required=True)
     teacher_marks = fields.Integer('Teacher Assigned Marks', required=True)
-    obtain_marks = fields.Float("Obtain Marks", group_operator="avg", compute='_total_calculation')
+    obtain_marks = fields.Integer("Obtain Marks", group_operator="avg", compute='_total_calculation')
   #  total_marks = fields.Integer(string='Total Marks', store=True, compute='_total_calculation')
   #  evaluation = fields.Char('Evaluation')
     result = fields.Char(compute='_evaluation_calculation', string='Result',
@@ -126,14 +127,21 @@ class subject(models.Model):
 class marking(models.Model):
     _name = 'marking.assignment'
     _res_name = 'totol_marks'
+    
+    
 
-    student_name = fields.Many2one('student.info', 'Student Name')
-    marks_assignment = fields.Many2one('assignment.grading', 'Marks Assignment')
-    grade = fields.Char('Grade', requied=True)
     obtain_marks = fields.One2many('assignment.grading', 'obtain_marks', 'Submitted Assignment')
 
 
+    @api.model
+    def create(self,vals):
+        if vals.get('student_name'):
+            student = self.env['student.info'].browse(vals.get('student_name'))
+            vals.update({'student_name':student.student_name})
+        
+        return super(marking, self).create(vals)
 
 
 
-   # prod_obj=self.pool.get(product.product) prod_name=prod_obj.browse(cr,uid,ids)[0].name
+
+          
