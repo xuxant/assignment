@@ -66,7 +66,7 @@ class assignment(models.Model):
 
 class grading(models.Model):
     _name = 'assignment.grading'
-    _rec_name = 'obtain_marks'
+    _rec_name = 'student_name'
 
     @api.constrains('obtain_marks', 'minimum_marks')
     def _validate_marks(self):
@@ -106,9 +106,8 @@ class grading(models.Model):
     @api.depends('obtain_marks', 'minimum_marks')
     def _evaluation_calculation(self):
         for grade in self:
-            if grade.minimum_marks and grade.minimum_marks:
-                if grade.minimum_marks< \
-                     grade.obtain_marks:
+            if grade.minimum_marks and grade.obtain_marks:
+                if (self.obtain_marks > self.minimum_marks):
                     grade.result = 'Pass'
                 else:
                     grade.result = 'Fail'
@@ -131,6 +130,7 @@ class marking(models.Model):
     student_name = fields.Many2one('student.info', 'Student Name')
     marks_assignment = fields.Many2one('assignment.grading', 'Marks Assignment')
     grade = fields.Char('Grade', requied=True)
+    obtain_marks = fields.One2many('assignment.grading', 'obtain_marks', 'Submitted Assignment')
 
 
 
