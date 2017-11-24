@@ -20,20 +20,42 @@ class teacher(models.Model):
 
 
     teacher_name = fields.Char('Name', required=True)
-    teacher_course = fields.Char('Subject', requied=True)
-    teacher_faculty = fields.Char('Faculty', required=True)
+    teacher_contact = fields.Char('Contact Number')
+    teacher_email = fields.Char('E-mail', requied=True)
+    faculty = fields.Many2one('faculty.info','Faculty', required=True)
 
-class home(models.Model):
-    _name = 'home.info'
+
+
+class faculty(models.Model):
+    _name = 'faculty.info'
+    _rec_name = 'faculty'
+
+    faculty = fields.Char('Faculty', requied=True)
+    head_of_department = fields.Char('Faculty Administrator')
+
 
 
 class batch(models.Model):
     _name = 'batch.info'
-    _rec_name = 'batch_name'
+    _rec_name = 'year'
 
-    batch_name = fields.Char('Class Name', required=True)
+    year = fields.Char('Academic Year', required=True)
+    faculty = fields.Many2one('faculty.info', required=True)
+    year_start = fields.Date('Start Date', required=True)
+    year_end = fields.Date('End Date', required=True)
     student_number = fields.Integer('Number Of Student', required=True)
     batch_teacher = fields.Many2one('teacher.info', 'Class Teacher')
+
+
+class subject(models.Model):
+    _name = 'subject.info'
+    _rec_name = 'subject_name'
+
+    batch_name = fields.Many2one('batch.info', 'Class Name', required=True)
+    subject_name = fields.Char('Subject Name', required=True)
+    subject_teacher = fields.Many2one('teacher.info', 'Teacher Name')
+
+
 
 
 class student(models.Model):
@@ -42,9 +64,10 @@ class student(models.Model):
 
 
     student_name = fields.Char('Name', required=True)
-    student_level = fields.Selection([('1', 'Primary Level'), ('2', 'Secondary level'), ('3', 'High School Level'), ('4', 'Bachelor level'), ('5', 'Master Level')])
-    batch_name = fields.Many2one('batch.info', 'Class Name')
-    student_course = fields.Char('Course', required=True)
+    roll_no = fields.Integer('Roll No.', required=True)
+    contact = fields.Char('Contact Number', required=True)
+    year = fields.Many2one('batch.info', 'Academic Year', required=True)
+    faculty = fields.Many2one('faculty.info', 'Department' )
 
 
 
@@ -52,14 +75,14 @@ class assignment(models.Model):
     _name = 'assignment.info'
     _rec_name = 'assignment_name'
 
-
-    assignment_subject = fields.Char('Subject Name', required=True)
+    
+    year = fields.Many2one('batch.info', 'AssignedTo')
     assignment_name = fields.Char('Assignment Name', required=True)
     start_date = fields.Date('Start date', required=True)
     dead_line = fields.Date('Deadline', required=True)
-    teacher_name = fields.Many2one('teacher.info', 'AssignedBy')
-    assignment_subject = fields.Many2one('subject.info', 'Subject', teacher_name="[('teacher_name','=',teacher_name)]")
-    batch_name = fields.Many2one('batch.info', 'AssignedTo')
+    teacher_name = fields.Many2one('teacher.info', 'Assigned By')
+    subject_name = fields.Many2one('subject.info', 'Subject', domain="[('subject_teacher','=',teacher_name)]")
+    
 
 
 
@@ -115,14 +138,6 @@ class grading(models.Model):
 
 
 
-class subject(models.Model):
-    _name = 'subject.info'
-    _rec_name = 'subject_name'
-
-    batch_name = fields.Many2one('batch.info', 'Class Name', requied=True)
-    subject_name = fields.Char('Subject Name', required=True)
-    subject_teacher = fields.Many2one('teacher.info', 'Teacher Name')
-
 
 class marking(models.Model):
     _name = 'marking.assignment'
@@ -130,18 +145,5 @@ class marking(models.Model):
     
     
 
-    obtain_marks = fields.One2many('assignment.grading', 'obtain_marks', 'Submitted Assignment')
+    
 
-
-    @api.model
-    def create(self,vals):
-        if vals.get('student_name'):
-            student = self.env['student.info'].browse(vals.get('student_name'))
-            vals.update({'student_name':student.student_name})
-        
-        return super(marking, self).create(vals)
-
-
-
-
-          

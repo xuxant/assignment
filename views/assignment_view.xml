@@ -1,15 +1,19 @@
 <?xml version="1.0"?>
 <odoo>
+<!-->
 <record id="view_form_teacher" model="ir.ui.view">
         <field name="name">To Add Teacher Information</field>
-        <field name="model">teacher.info</field>
+        <field name="model">assignment.info</field>
         <field name="arch" type="xml">
-           <form string="Teacher Information">
+           <form string="Assignment Information">
 
                 <group>
-                    <field name="teacher_name"/>
-                    <field name="teacher_course"/>
-                    <field name="teacher_faculty" />
+                    <field name="year"/>
+                    <field name="assignment_name"/>
+                    <field name="start_date"/>
+                    <field name="dead_line" />
+                    <field name="teacher_name" />
+                    <field name="subject_name" />
                 </group>
            </form>
 
@@ -17,7 +21,7 @@
         </field>
 
     </record>
-
+-->
 
 
 
