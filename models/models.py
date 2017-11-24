@@ -139,11 +139,3 @@ class grading(models.Model):
 
 
 
-class marking(models.Model):
-    _name = 'marking.assignment'
-    _res_name = 'totol_marks'
-    
-    
-
-    
-
