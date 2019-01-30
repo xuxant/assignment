@@ -16,16 +16,16 @@
     -->
 
     <!-- actions opening views on models -->
-    <!--
+    <!-- Record is now debugged -->
     <record model="ir.actions.act_window" id="assignment.action_window">
       <field name="name">assignment window</field>
       <field name="res_model">assignment.assignment</field>
       <field name="view_mode">tree,form</field>
     </record>
-    -->
+    
 
     <!-- server action to the one above -->
-    <!--
+    <!-- This code is also now runnable -->
     <record model="ir.actions.server" id="assignment.action_server">
       <field name="name">assignment server</field>
       <field name="model_id" ref="model_assignment_assignment"/>
@@ -38,23 +38,23 @@
         }
       </field>
     </record>
-    -->
+   
 
     <!-- Top menu item -->
-    <!--
+    <!-- This menu item is also avaliable -->
     <menuitem name="assignment" id="assignment.menu_root"/>
-    -->
+   
     <!-- menu categories -->
-    <!--
+    <!-- Menu list is improved -->
     <menuitem name="Menu 1" id="assignment.menu_1" parent="assignment.menu_root"/>
     <menuitem name="Menu 2" id="assignment.menu_2" parent="assignment.menu_root"/>
-    -->
+   
     <!-- actions -->
-    <!--
+    <!-- I have just remove the code under comment section -->
     <menuitem name="List" id="assignment.menu_1_list" parent="assignment.menu_1"
               action="assignment.action_window"/>
     <menuitem name="Server to list" id="assignment" parent="assignment.menu_2"
               action="assignment.action_server"/>
-    -->
+  
   </data>
 </odoo>
