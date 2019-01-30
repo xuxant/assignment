@@ -97,7 +97,7 @@
               parent="menu_assignment"
               action="assignment_grading" />
 
-    <!-- Report Menu -->
+    <!-- Report Menu, This is to make the reoport action runnable. -->
     <menuitem id="report_menu"
               name="Report"
               parent="menu_assignment"
@@ -105,3 +105,4 @@
 
 
 </odoo>
+
